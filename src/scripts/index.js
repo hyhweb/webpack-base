@@ -1,11 +1,12 @@
 import person from 'scripts/module'
+import common from "scripts/common";
 import  'theme/index.css';
 import  'theme/main.scss';
 
-/*alert(person.party);*/
-console.log(person.age);
-console.log("6666")
-console.log("888888")
+alert(common.aaa);
+console.log(person.bbb);
+/*console.log("6666")
+console.log("888888")*/
 var root =document.createElement('div');
 root.append(document.createTextNode(person.age));
 document.getElementById("root").append(document.createTextNode(person.age));
