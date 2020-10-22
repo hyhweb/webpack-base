@@ -17,15 +17,16 @@ module.exports={
     //模式
     //mode: "development",//development, production 或 none
     //多文件入口，可以实现代码分割（代码分割方式一）
-    entry: {
+  /*  entry: {
         bundle:"./src/scripts/index.js",
         module:"./src/scripts/module.js",
-    },
-  /*  entry: "./src/scripts/index.js",*/
+    },*/
+    entry: ["./src/scripts/index.js"],
     //输出
     output:{
         path: path.resolve(__dirname,"dist"),
         filename: path.posix.join("static", "js/[name][chunkhash:8].js"),
+        chunkFilename:path.posix.join("static", "js/[name][chunkhash:8].js"),
         /*filename: path.resolve("./dist","[name].js"),*/
         publicPath: "/",
     },
@@ -39,7 +40,7 @@ module.exports={
                     {
                         loader: 'url-loader',
                         options: {
-                            limit:8192,
+                            limit:18192,  //18k,图片小于18k，就会生产dataUrl的base64位图放到首页，减少图片请求。如果大于18k，就放到下面的文件夹里面。
                             outputPath:"static/images"
                         }
                     }
@@ -72,6 +73,7 @@ module.exports={
            /* filename: '[name].css',
             chunkFilename: '[id].css',*/
            filename:path.posix.join("static", "css/[name][chunkhash:8].css"),
+            chunkFilename:path.posix.join("static", "css/[name][chunkhash:8].css"),
         }),
         new OptimizeCssAssetsPlugin(),
 
@@ -102,6 +104,7 @@ module.exports={
     },
     //优化
     optimization:{
+        //代码分割配置（方式二）
         splitChunks: {
             chunks: "all",          //async异步代码分割 initial同步代码分割 all同步异步分割都开启
             minSize: 1,         //字节 引入的文件大于30kb才进行分割
@@ -115,12 +118,14 @@ module.exports={
                 vendors: {  //自定义打包模块
                     test: /[\\/]node_modules[\\/]/,
                     priority: -10, //优先级，先打包到哪个组里面，值越大，优先级越高
-                    filename: path.posix.join('static','js/[name][chunkhash:8][id].vendors.js') ,
+                    name: 'chunk-vendors'
+                    //filename: path.posix.join('static','js/[name][chunkhash:8][id].vendors.js') ,
                 },
                 default: { //默认打包模块
                     priority: -20,
                     reuseExistingChunk: true, //模块嵌套引入时，判断是否复用已经被打包的模块
-                    filename:path.posix.join('static','js/[name][chunkhash:8][id].common.js')
+                   // name: 'chunk-common'
+                    // filename:path.posix.join('static','js/[name][chunkhash:8][id].common.js'),
                 }
             }
         },

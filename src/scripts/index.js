@@ -3,7 +3,15 @@ import common from "scripts/common";
 import  'theme/index.css';
 import  'theme/main.scss';
 
-alert(common.aaa);
+window.onresize= function(){
+    alert('do')
+    require.ensure([], function() {
+        var baidumap = require('./index2.js') //baidumap.js放在我们当前目录下
+        console.log(baidumap.add(2,3)) ;
+
+    })
+}
+//alert(common.aaa);
 console.log(person.bbb);
 /*console.log("6666")
 console.log("888888")*/
